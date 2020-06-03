@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Escenario</title>
+    <style>
+      html, body { margin: 0; padding: 0; overflow: hidden; }
+        #info {
+		        background:#777;
+                position: absolute;
+                padding: 10px;
+                width: 100%;
+                text-align: center;
+                color: #000000;
+            }
+    </style>
+  </head>
+  <body>
+      <div id="info">
+            
+            Mateo Buitrago <br/>
+        </div>
+    <script src="js/three.js"></script>
+	<script src="js/controls/OrbitControls.js"></script>
+	<script src="js/csg.js"></script>
+	<script src="js/THREE.CSG.js"></script>
+	
+    <script>
+		var scene, aspect, camera, renderer, controls;
+		init();
+		animate();
+		function init(){
+			//INICIALIZACIÓN
+	        scene = new THREE.Scene();
+			scene.background = new THREE.Color( 0x252850 );
+	        aspect = window.innerWidth / window.innerHeight;
+	        camera = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000);
+	        renderer = new THREE.WebGLRenderer();
+	        renderer.setSize( window.innerWidth, window.innerHeight );
+	        document.body.appendChild( renderer.domElement );
+			controls = new THREE.OrbitControls( camera, renderer.domElement );
+			
+			//ELEMENTOS COMUNES
+			var size = 10;
+			var arrowSize = 1;
+			var divisions = size;
+			var origin = new THREE.Vector3( 0, 0, 0 );
+			var x = new THREE.Vector3( 1, 0, 0 );
+			var y = new THREE.Vector3( 0, 1, 0 );
+		  	var z = new THREE.Vector3( 0, 0, 1 );
+		  	var color = new THREE.Color( 0x333333 );
+		  	var colorR = new THREE.Color( 0xAA3333 );
+		  	var colorG = new THREE.Color( 0x33AA33 );
+		  	var colorB = new THREE.Color( 0x333366 );
+			
+		
+				
+				// Ligths
+		  
+		   
+			
+			
+			 
+			var pointLight1 = new THREE.PointLight( 0xff8000, 1.5, 100 );
+			pointLight1.position.set( -8.6, 1.5, 4.6 );
+			scene.add( pointLight1 );
+			var pointLight4 = new THREE.PointLight(0xffffff, 1.5, 10 );
+			pointLight4.position.set(-7.6, 1.5 , -1.6); 
+		   
+			pointLight4.castShadow = true;
+			scene.add(pointLight4);
+			
+			
+		
+		   
+
+			render();
+		
+			
+          
+    
+			//CREAR LAS GEOMETRÍAS
+			var boxGeometry = new THREE.BoxGeometry( 11, .5, 7 );
+            var boxGeometry1 = new THREE.BoxGeometry( 8, 4, 4 );
+			var techo = new THREE.BoxGeometry(11,.75,7);
+			var corte = new THREE.BoxGeometry(11,.75,3.53);
+			var piso = new THREE.BoxGeometry( 40, 40, 40 );			
+			var columna = new THREE.CylinderGeometry(.25, .25, 4, 32 );
+			
+			
+						
+			//CREAR LOS MATERIALES
+			var texture = new THREE.TextureLoader().load( 'marmol.jpg' );
+			var texture2 = new THREE.TextureLoader().load( 'cemento.jpg' );
+
+			
+           
+			var material2 = new THREE.MeshPhongMaterial( { color: 0x4e3b31 } );
+			var material6 = new THREE.MeshLambertMaterial( {color: 0x9b9b9b} );
+			var material8 = new THREE.MeshLambertMaterial( {color: 0xfffccb} );
+			
+			
+			//CREAR LAS MALLAS
+			var cube = new THREE.Mesh( boxGeometry, material6 );
+            var cube1 = new THREE.Mesh( boxGeometry, material6 );
+			var interior = new THREE.Mesh( boxGeometry1, material8 );
+            var piso1 = new THREE.Mesh(piso, material2);
+			
+			
+			var columna1 =  new THREE.Mesh( columna, material6);
+			var columna2 =  new THREE.Mesh( columna, material6);
+			var columna3 =  new THREE.Mesh( columna, material6);
+			var columna4 =  new THREE.Mesh( columna, material6);
+			var columna5 =  new THREE.Mesh( columna, material6);
+			var columna6 =  new THREE.Mesh( columna, material6);
+			var columna7 =  new THREE.Mesh( columna, material6);
+			var columna8 =  new THREE.Mesh( columna, material6);
+			var columna9 =  new THREE.Mesh( columna, material6);
+			var columna10 =  new THREE.Mesh( columna, material6);
+			var columna11 =  new THREE.Mesh( columna, material6);
+			var columna12 =  new THREE.Mesh( columna, material6);
+			var columna13 =  new THREE.Mesh( columna, material6);
+			var columna14 =  new THREE.Mesh( columna, material6);
+			var columna15 =  new THREE.Mesh( columna, material6);
+			var columna16 =  new THREE.Mesh( columna, material6);
+			var techo1 = new THREE.Mesh( techo, material2);
+			var corte1 = new THREE.Mesh( corte, material2);
+			var corte2 = new THREE.Mesh( corte, material2);
+			
+			
+			
+			cube.translateX(-1.5);
+			cube.translateZ(.5);
+			cube.translateY(4);
+			
+			cube1.translateX(-1.5);
+			cube1.translateZ(.5);
+			
+			interior.translateX(-1.5);
+			interior.translateZ(.5);
+			interior.translateY(2);
+			
+			columna1.translateY(2);
+			columna1.translateZ(3.5);
+			columna1.translateX(-.5);
+			
+			columna2.translateY(2);
+			columna2.translateZ(3.5);
+			columna2.translateX(1.5);
+			
+			columna3.translateY(2);
+			columna3.translateZ(3.5);
+			columna3.translateX(3.5);
+						
+			columna4.translateY(2);
+			columna4.translateZ(3.5);
+			columna4.translateX(-2.5);
+			
+			columna5.translateY(2);
+			columna5.translateZ(3.5);
+			columna5.translateX(-4.5);
+			
+			columna6.translateY(2);
+			columna6.translateZ(3.5);
+			columna6.translateX(-6.5);
+			
+			
+			columna7.translateY(2);
+			columna7.translateZ(-2.5);
+			columna7.translateX(-.5);
+			
+			columna8.translateY(2);
+			columna8.translateZ(-2.5);
+			columna8.translateX(1.5);
+			
+			columna9.translateY(2);
+			columna9.translateZ(-2.5);
+			columna9.translateX(3.5);
+						
+			columna10.translateY(2);
+			columna10.translateZ(-2.5);
+			columna10.translateX(-2.5);
+			
+			columna11.translateY(2);
+			columna11.translateZ(-2.5);
+			columna11.translateX(-4.5);
+			
+			columna12.translateY(2);
+			columna12.translateZ(-2.5);
+			columna12.translateX(-6.5);
+			
+			columna13.translateY(2);
+			columna13.translateZ(-.5);
+			columna13.translateX(-6.5);
+			
+			columna14.translateY(2);
+			columna14.translateZ(1.5);
+			columna14.translateX(-6.5);
+			
+			columna15.translateY(2);
+			columna15.translateZ(-.5);
+			columna15.translateX(3.5);
+			
+			columna16.translateY(2);
+			columna16.translateZ(1.5);
+			columna16.translateX(3.5);
+			
+			techo1.translateY(4.6);
+			techo1.translateZ(.5);
+			techo1.translateX(-1.5);
+			
+			corte1.translateY(5);
+			corte1.translateZ(2.5);
+			corte1.translateX(-1.5);
+			
+			corte1.rotateX(3.3)
+			
+			corte2.translateY(5);
+			corte2.translateZ(-1.5);
+			corte2.translateX(-1.5);
+			
+			corte2.rotateX(-3.3)
+			
+			piso1.translateY(-20);
+			piso1.translateX(10);
+			piso1.translateZ(-5);
+			
+			
+			
+			
+			
+          
+			
+			
+			
+			var columna1CSG =  new THREE.CSG.fromMesh( columna1);
+			var columna2CSG =  new THREE.CSG.fromMesh( columna2);
+			var columna3CSG =  new THREE.CSG.fromMesh( columna3);
+			var columna4CSG =  new THREE.CSG.fromMesh( columna4);
+			var columna5CSG =  new THREE.CSG.fromMesh( columna5);
+			var columna6CSG =  new THREE.CSG.fromMesh( columna6);
+			var columna7CSG =  new THREE.CSG.fromMesh( columna7);
+			var columna8CSG =  new THREE.CSG.fromMesh( columna8);
+			var columna9CSG =  new THREE.CSG.fromMesh( columna9);
+			var columna10CSG =  new THREE.CSG.fromMesh( columna10);
+			var columna11CSG =  new THREE.CSG.fromMesh( columna11);
+			var columna12CSG =  new THREE.CSG.fromMesh( columna12);
+			var columna13CSG =  new THREE.CSG.fromMesh( columna13);
+			var columna14CSG =  new THREE.CSG.fromMesh( columna14);
+			var columna15CSG =  new THREE.CSG.fromMesh( columna15);
+			var columna16CSG =  new THREE.CSG.fromMesh( columna16);
+			
+			var techoCSG =  new THREE.CSG.fromMesh( techo1);
+			var corte1CSG =  new THREE.CSG.fromMesh( corte1);
+			var corte2CSG =  new THREE.CSG.fromMesh( corte2);
+			var interiorCSG =  new THREE.CSG.fromMesh( interior);
+			var cubeCSG =  new THREE.CSG.fromMesh( cube);
+			var cube1CSG =  new THREE.CSG.fromMesh( cube1);
+			
+		
+			var result = cubeCSG.union(columna1CSG).union(columna2CSG).union(columna3CSG).union(columna4CSG).union(columna5CSG).union(columna6CSG).union(columna7CSG).union(columna8CSG).union(columna9CSG)
+			.union(columna10CSG).union(columna11CSG).union(columna12CSG).union(columna13CSG).union(columna14CSG).union(columna15CSG).union(columna16CSG).union(cube1CSG);
+			
+			var techofinal = techoCSG.subtract(corte1CSG).subtract(corte2CSG);
+			cube = THREE.CSG.toMesh(result);
+			cube.material = material8;
+			techo1 = THREE.CSG.toMesh(techofinal);
+			techo1.material=material8;
+			
+			scene.add(techo1);
+			scene.add(cube);
+			scene.add(interior);
+			scene.add(piso1);
+			
+			
+			
+			camera.position.x = -11;
+			camera.position.y = 1.5;
+		  	camera.position.z = 7;
+			camera.lookAt( origin );
+		}
+		function animate(){
+			requestAnimationFrame( animate );
+			controls.update();
+			render();
+		}
+		function render(){
+			renderer.render( scene, camera );
+		}
+    </script>
+  </body>
+</html>

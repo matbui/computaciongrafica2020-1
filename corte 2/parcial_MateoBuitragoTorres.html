@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+  <head> 
+    <title>LEGO</title>
+    <style>
+      html, body { margin: 0; padding: 0; overflow: hidden; }
+      #info {
+          position: absolute;
+          padding: 10px;
+          width: 100%;
+          text-align: center;
+          color: #FFFFFF;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="info">LEGO<br/>
+          Usar flechas para mover.  más  para crear legos<br/>
+    </div>
+    <script src="js/three.min.js"></script>
+	<script src="js/three.js"></script>
+	<script src="js/controls/OrbitControls.js"></script>
+	<script src="js/csg.js"></script>
+	<script src="js/THREE.CSG.js"></script>
+    <script>
+	
+		var scene, aspect, camera, renderer;
+		var startTime = Date.now();		
+		var upArrow = false;
+		var downArrow = false;
+		var leftArrow = false;
+		var rightArrow = false;
+		var frontArrow = false;
+		var behindArrow = false;
+		var addArrow = false;
+		var removeArrow = false;
+		var object;
+		var object1;
+		var lego;
+		var RX = 0;
+        var RY = 0;
+        var RZ = 0;
+		var aArrow = false;
+        var sArrow = false;
+        var dArrow = false;
+		init();
+		animate();
+	
+		function init(){
+			//INICIALIZACIÓN DE LA ESCENA
+			scene = new THREE.Scene();
+			aspect = window.innerWidth / window.innerHeight;
+			camera = new THREE.PerspectiveCamera( 45, aspect, 0.1, 1000);
+			renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+				  			
+			//EVENTOS DE TECLADO
+			//Códigos de las teclas: https://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes
+			var onKeyDown = function ( event ) {
+				switch ( event.keyCode ) {
+					case 39: 
+						upArrow = true;
+						break;
+					
+					case 37: 
+						downArrow = true;
+						break;
+					case 40: 
+						rightArrow = true;
+						break;
+					case 38: 
+						leftArrow = true;
+						break;
+					case 97: 
+						frontArrow = true;
+						break;
+					case 100: 
+						behindArrow = true;
+						break;
+					case 65:
+						aArrow = true;
+						break;
+					case 83:
+						sArrow = true;
+						break;
+					case 68: 
+						dArrow = true;
+						break;
+					case 187: 
+						addArrow = true;
+						break;
+					case 46: 
+						removeArrow = true;
+						break;
+				}
+			};	  
+		  			
+			var onKeyUp = function ( event ) {
+				switch ( event.keyCode ) {
+					case 39: 
+						upArrow = false;
+						break;
+					case 37: 
+						downArrow = false;
+						break;
+					case 40: 
+						rightArrow = false;
+						break;
+					case 38: 
+						leftArrow = false;
+						break;
+					case 97: 
+						frontArrow = false;
+						break;
+					case 100: 
+						behindArrow = false;
+						break;
+					case 65: 
+						aArrow = false;
+						break;
+					case 83:
+						sArrow = false;
+						break;
+					case 68: 
+						dArrow = false;
+						break;
+					case 187: 
+						addArrow = false;
+						break;
+					case 46: 
+						removeArrow = false;
+						break;
+				}
+			};
+				  
+		  			
+				
+			
+			
+			
+			
+			document.addEventListener( 'keydown', onKeyDown, false );
+			document.addEventListener( 'keyup', onKeyUp, false );
+			
+			
+			//ELEMENTOS DE ESCENA
+			var boxGeometry = new THREE.BoxGeometry( 3, 1, 1.2 );
+			var cilindro = new THREE.CylinderGeometry( .15, .15, .3, 32 );
+			var material1 = new THREE.MeshBasicMaterial( {color: 0x000000} );
+			var material7 = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+			var cube = new THREE.Mesh( boxGeometry, material7 );
+			var cilindro1 = new THREE.Mesh( cilindro, material1);
+			var cilindro2 = new THREE.Mesh( cilindro, material1);
+			var cilindro3 = new THREE.Mesh( cilindro, material1);
+			var cilindro4 = new THREE.Mesh( cilindro, material1);
+			var cilindro5 = new THREE.Mesh( cilindro, material1);
+			var cilindro6 = new THREE.Mesh( cilindro, material1);
+			
+			cilindro1.translateY(0.5);
+           
+			cilindro1.translateZ(0.3);
+			
+			cilindro2.translateY(0.5);
+            
+			cilindro2.translateZ(-0.3);
+			
+			cilindro3.translateY(0.5);
+            cilindro3.translateX(1);
+			cilindro3.translateZ(0.3);
+			
+			cilindro4.translateY(0.5);
+            cilindro4.translateX(1);
+			cilindro4.translateZ(-0.3);
+			
+			cilindro5.translateY(0.5);
+            cilindro5.translateX(-1);
+			cilindro5.translateZ(0.3);
+			
+			cilindro6.translateY(0.5);
+            cilindro6.translateX(-1);
+			cilindro6.translateZ(-0.3);
+			
+			
+			
+			var size = 100;
+			var arrowSize = 1;
+			var divisions = size;
+			var origin = new THREE.Vector3( 0, 0, 0 );
+			var x = new THREE.Vector3( 1, 0, 0 );
+			var y = new THREE.Vector3( 0, 1, 0 );
+		  	var z = new THREE.Vector3( 0, 0, 1 );
+			var color1 = new THREE.Color( 0xFFFFFF );
+		  	var color2 = new THREE.Color( 0x333333 );
+		  	var colorR = new THREE.Color( 0xAA3333 );
+		  	var colorG = new THREE.Color( 0x33AA33 );
+		  	var colorB = new THREE.Color( 0x333366 );
+			var colorRd = new THREE.Color( 0xAA6666 );
+		  	var colorGd = new THREE.Color( 0x66AA66 );
+		  	var colorBd = new THREE.Color( 0x6666AA );
+		  
+		  	//CREAR LAS GRILLAS PARA EL ESCENARIO
+		  	var axesHelper = new THREE.AxesHelper( size );
+		  	var gridHelperXY = new THREE.GridHelper( size, divisions, color1, color1);
+		  	var gridHelperXZ = new THREE.GridHelper( size, divisions, color2, color2 );
+		  	var gridHelperYZ = new THREE.GridHelper( size, divisions, color2, color2 );
+            
+            //ROTARLAS PARA QUE QUEDEN EN EL ESPACIO ADECUADO
+            gridHelperXY.rotateOnWorldAxis ( x, THREE.Math.degToRad(90) );
+            gridHelperXZ.rotateOnWorldAxis ( y, THREE.Math.degToRad(90) );
+            gridHelperYZ.rotateOnWorldAxis ( z, THREE.Math.degToRad(90) );
+            
+            //CREAR LAS FLECHAS QUE INDICAN LOS EJES DE COORDENADAS 3D
+            var arrowX = new THREE.ArrowHelper( x, origin, arrowSize, colorR );
+            var arrowY = new THREE.ArrowHelper( y, origin, arrowSize, colorG );
+            var arrowZ = new THREE.ArrowHelper( z, origin, arrowSize, colorB );
+			
+			
+			
+			
+			
+			
+			var boxCSG = THREE.CSG.fromMesh( cube );
+			var cylinder1CSG = THREE.CSG.fromMesh( cilindro1 );
+			var cylinder2CSG = THREE.CSG.fromMesh( cilindro2 );
+			var cylinder3CSG = THREE.CSG.fromMesh( cilindro3 );
+			var cylinder4CSG = THREE.CSG.fromMesh( cilindro4 );
+			var cylinder5CSG = THREE.CSG.fromMesh( cilindro5 );
+			var cylinder6CSG = THREE.CSG.fromMesh( cilindro6 );
+			
+			var result = boxCSG.union(cylinder1CSG).union(cylinder2CSG).union(cylinder3CSG).union(cylinder4CSG).union(cylinder5CSG).union(cylinder6CSG);
+			
+			lego= THREE.CSG.toMesh(result);
+			lego.material=material7;
+		
+		  	//AGREGAR A LA ESCENA
+			scene.add(lego);
+			
+            scene.add( gridHelperXZ );
+		  	scene.add( arrowX );	
+		  	scene.add( arrowY );	
+		  	scene.add( arrowZ );	
+			//scene.add( object );
+			
+			
+			
+			
+			
+			//MOVER LA CÁMARA
+			camera.position.x = 15;
+			camera.position.y = 5;	 
+		  	camera.position.z =  15;			
+		  	camera.lookAt( origin );
+			}
+    
+    function animate() {
+	
+        render();
+        requestAnimationFrame( animate );
+		
+	}
+    
+    function render(){
+        var dtime = Date.now()-startTime;
+		var tx=0, ty=0, tz=0;
+		var q1 = new THREE.Quaternion();
+        q1.setFromAxisAngle( new THREE.Vector3( 1, 0, 0 ), RX );
+        
+        var q2 = new THREE.Quaternion();
+        q2.setFromAxisAngle( new THREE.Vector3( 0, 1, 0 ), RY );
+        
+        var q3 = new THREE.Quaternion();
+        q3.setFromAxisAngle( new THREE.Vector3( 0, 0, 1 ), RZ );
+		
+		if(upArrow) {
+			tx=0.4;
+		}
+		if(downArrow) {
+			tx=-0.4;
+		}
+		if(rightArrow) {
+			ty=0.4;
+		}
+		if(leftArrow) {
+			ty=-0.4;
+		}
+		if(frontArrow) {
+			tz=0.4;
+		}
+		if(behindArrow) {
+			tz=-0.4;
+		}
+          
+        if(aArrow) {
+            lego.setRotationFromQuaternion(q1);
+			RX += 0.1;
+		}
+		if(sArrow) {
+            lego.setRotationFromQuaternion(q2);
+			
+			RY += 0.1;
+		}
+        if(dArrow) {
+            lego.setRotationFromQuaternion(q3);
+			RZ += 0.1;
+		}
+		if(addArrow){
+			var object2 =lego.clone();
+			
+		
+            //crear(tx,ty,tz);
+			scene.add(lego);
+			scene.add(object2);
+		}
+		if(removeArrow){
+			scene.remove(lego);
+		}
+
+		//MATRIZ DE TRASLACIÓN
+		var t = new THREE.Matrix4();		//Crear la matriz de traslación
+		t.set( 	1, 0, 0, tx,
+				0, 1, 0, ty, 
+				0, 0, 1, tz,
+				0, 0, 0, 1	);
+
+
+		lego.applyMatrix(t);
+		//Aplicar la matriz de traslación al objeto				
+		lego.elementsNeedUpdate = true;	//Avisar que la matriz del objeto ha cambiado
+        camera.lookAt( 0, 0, 0 );
+		console.log(lego.rotation);
+        renderer.render( scene, camera );
+    }
+	function crear( tx, ty, tz){
+		
+		var boxGeometry = new THREE.BoxGeometry( 3, 1, 1 );
+		var material8 = new THREE.MeshBasicMaterial( {color: 0xf8088b} );
+		var cube = new THREE.Mesh( boxGeometry, material8 );
+		var t = new THREE.Matrix4();		//Crear la matriz de traslación
+		t.set( 	1, 0, 0, tx,
+				0, 1, 0, ty, 
+				0, 0, 1, tz,
+				0, 0, 0, 1	);
+
+		cube.applyMatrix(t);
+		scene.add(cube);
+	
+	
+	}
+    </script>
+  </body>
+</html>

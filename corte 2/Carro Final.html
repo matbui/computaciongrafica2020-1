@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Carro</title>
+    <style>
+      html, body { margin: 0; padding: 0; overflow: hidden; }
+        #info {
+                position: absolute;
+                padding: 10px;
+                width: 100%;
+                text-align: center;
+                color: #000000;
+            }
+    </style>
+  </head>
+  <body>
+      <div id="info">
+            Martin Rodriguez.<br/>
+            Maria Paula velandia <br/>
+            Santiago maecha <br/>
+            Mateo Buitrago <br/>
+        </div>
+    <script src="js/three.js"></script>
+	<script src="js/controls/OrbitControls.js"></script>
+	<script src="js/csg.js"></script>
+	<script src="js/THREE.CSG.js"></script>
+    <script>
+		var scene, aspect, camera, renderer, controls;
+		init();
+		animate();
+		function init(){
+			//INICIALIZACIÓN
+	        scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xffffff);
+	        aspect = window.innerWidth / window.innerHeight;
+	        camera = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000);
+	        renderer = new THREE.WebGLRenderer();
+	        renderer.setSize( window.innerWidth, window.innerHeight );
+	        document.body.appendChild( renderer.domElement );
+			controls = new THREE.OrbitControls( camera, renderer.domElement );
+			
+			//ELEMENTOS COMUNES
+			var size = 10;
+			var arrowSize = 1;
+			var divisions = size;
+			var origin = new THREE.Vector3( 0, 0, 0 );
+			var x = new THREE.Vector3( 1, 0, 0 );
+			var y = new THREE.Vector3( 0, 1, 0 );
+		  	var z = new THREE.Vector3( 0, 0, 1 );
+		  	var color = new THREE.Color( 0x333333 );
+		  	var colorR = new THREE.Color( 0xAA3333 );
+		  	var colorG = new THREE.Color( 0x33AA33 );
+		  	var colorB = new THREE.Color( 0x333366 );
+			
+		  	//CREAR LAS GRILLAS PARA EL ESCENARIO
+		  	var axesHelper = new THREE.AxesHelper( size );
+			scene.add( axesHelper );
+			
+		  	var gridHelperXZ = new THREE.GridHelper( size, divisions, color, color );
+			scene.add( gridHelperXZ );
+            
+            //ROTARLAS PARA QUE QUEDEN EN EL ESPACIO ADECUADO
+            gridHelperXZ.rotateOnWorldAxis ( y, THREE.Math.degToRad(90) );
+
+            //CREAR ILUMINACIÓN
+            var ambient = new THREE.AmbientLight( 0xffffff, 2 );
+            scene.add( ambient );
+			
+            var pointLight = new THREE.PointLight( 0xffffff, 1, 100 );
+            pointLight.position.set( -5, 1, 5 );
+            scene.add( pointLight );
+			
+            var pointLight = new THREE.PointLight( 0xffffff, .5, 100 );
+            pointLight.position.set( 5, 1, -5 );
+            scene.add( pointLight );
+			
+          
+    
+			//CREAR LAS GEOMETRÍAS
+			var boxGeometry = new THREE.BoxGeometry( 2, 2.5, 2 );
+            var boxGeometry1 = new THREE.BoxGeometry( 6, 0.8, 3.3 );
+			var sphereGeometry = new THREE.SphereGeometry( .5, 32, 32 );
+            var Conegeometry = new THREE.ConeGeometry( 2.39, 2, 4 );
+            var Conegeometry1 = new THREE.ConeGeometry( 0.2, 1.5, 32 );
+            var cylindergeometry = new THREE.CylinderGeometry( 0.2, 0.2, 0.5, 100 );
+            var cylinder2geometry = new THREE.CylinderGeometry( 0.08, 0.08, 3.5, 100 );
+            var geometry = new THREE.PlaneGeometry( 3.32, 0.2, 32 );
+            var geometry1 = new THREE.PlaneGeometry( 1, 0.2, 32 );
+            var geometry2 = new THREE.PlaneGeometry( 1, 0.2, 32 );
+            var geometry3 = new THREE.PlaneGeometry( 3.32, 0.2, 32 );
+            var geometry4 = new THREE.PlaneGeometry( 0.5, 0.25, 32 );
+            var geometry5 = new THREE.SphereGeometry( 0.1, 0.1, 32 );
+            var geometry6 = new THREE.SphereGeometry( 0.1, 0.1, 32 );
+            var geometry7 = new THREE.PlaneGeometry( 2, 0.5, 32 );
+            
+            //Parte Mateo
+			var geometry11 = new THREE.CylinderGeometry( .45, .45, .3, 32 );
+			var geometry22 = new THREE.CylinderGeometry( .25, .25, .3, 32 );
+			var geometry33 = new THREE.CylinderGeometry( .25, .25, .2, 32 );
+			var geometry44 = new THREE.BoxGeometry( 4, .1, .2 );
+			var geometry55 = new THREE.BoxGeometry( .2, .1, 3.3 );
+			var geometry66 = new THREE.BoxGeometry( .7, .1, .5 );
+			var geometry77 = new THREE.BoxGeometry( 1, .1, .5 );
+			var geometry88 = new THREE.BoxGeometry( 1, .1, .7 );
+			//Fin parte Mateo
+        
+						
+			//CREAR LOS MATERIALES
+            var material1 = new THREE.MeshStandardMaterial( { color: 0xf8088b, metalness: 0.5, roughness: 0.1 } );
+			var material2 = new THREE.MeshStandardMaterial( { color: colorG, metalness: 0.5, roughness: 0.1 } );
+            var material3 = new THREE.MeshBasicMaterial( {color: 0xcec0ce} );
+            var material4 = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+            var material5 = new THREE.MeshStandardMaterial( { color:0xcec0ce, metalness: 0.5, roughness: 0.1 } );
+            var material = new THREE.MeshBasicMaterial( {color: 0xCEC0CE, side: THREE.DoubleSide} );
+            var material6 = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
+            var material7 = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+            var material8 = new THREE.MeshBasicMaterial( {color: 0xfe5203} );
+            var material12 = new THREE.MeshBasicMaterial( {color: 0xcecdce} );
+            
+            //Parte Mateo
+			var material55 = new THREE.MeshBasicMaterial( {color: 0x000000} );
+			var material66 = new THREE.MeshBasicMaterial( {color: 0x9b9b9b} );
+			//Fin parte Mateo
+            
+			//CREAR LAS MALLAS
+			var cube = new THREE.Mesh( boxGeometry, material1 );
+            var cube1=new THREE.Mesh( boxGeometry1, material1 );
+            var cone = new THREE.Mesh( Conegeometry, material3 );
+            var cone1 = new THREE.Mesh( Conegeometry1, material3 );
+            var cone2 = new THREE.Mesh( Conegeometry1, material3 );
+			var sphere = new THREE.Mesh( sphereGeometry, material2 );
+            var cylinder = new THREE.Mesh( cylindergeometry, material4 );
+            var cylinder1 = new THREE.Mesh( cylindergeometry, material4 );
+            var cylinder2 = new THREE.Mesh(cylinder2geometry,material5);
+            var plane = new THREE.Mesh( geometry, material );
+            var plane1 = new THREE.Mesh( geometry1, material );
+            var plane2 = new THREE.Mesh( geometry1, material );
+            var plane3 = new THREE.Mesh( geometry3, material );
+            var plane4 = new THREE.Mesh( geometry4, material6 );
+            var plane5 = new THREE.Mesh( geometry4, material6 );
+            var plane6 = new THREE.Mesh( geometry7, material );
+            var sphere = new THREE.Mesh( geometry5, material7 );
+            var sphere2 = new THREE.Mesh( geometry5, material7 );
+            var sphere3 = new THREE.Mesh( geometry6, material8 );
+            var sphere4 = new THREE.Mesh( geometry6, material8 );
+            var sphere5 = new THREE.Mesh( geometry6, material12 );
+            
+            //Parte Mateo
+			var cylinder22 = new THREE.Mesh( geometry11, material55);
+			var cylinder55 = new THREE.Mesh( geometry11, material55);
+			var cylinder33 = new THREE.Mesh( geometry11, material55);
+			var cylinder44 = new THREE.Mesh( geometry11, material55);
+			
+			var cylinder66 = new THREE.Mesh( geometry22, material55);
+			var cylinder77 = new THREE.Mesh( geometry22, material55);
+			var cylinder88 = new THREE.Mesh( geometry22, material55);
+			var cylinder99 = new THREE.Mesh( geometry22, material55);
+			
+			var cylinder100 = new THREE.Mesh( geometry33, material66);
+			var cylinder111 = new THREE.Mesh( geometry33, material66);
+			var cylinder122 = new THREE.Mesh( geometry33, material66);
+			var cylinder133 = new THREE.Mesh( geometry33, material66);
+			
+			var tubo = new THREE.Mesh( geometry44, material66);
+			var tubo2 = new THREE.Mesh( geometry44, material66);
+			var tubo3 = new THREE.Mesh( geometry55, material66);
+			var tubo4 = new THREE.Mesh( geometry55, material66);
+			var tubo5 = new THREE.Mesh( geometry66, material66);
+			var tubo6 = new THREE.Mesh( geometry77, material66);
+			var tubo7 = new THREE.Mesh( geometry88, material66);
+			//Fin parte Mateo
+            
+            cube.translateY(4 );
+            cube.translateX(-0.2 );
+            cube1.translateY(1.5);
+            cone.translateY(2.87);
+            cone.translateX(-0.2);
+            cone.rotateY(2.35);
+            
+            cone1.rotateZ(1.55);
+            cone1.translateY(-2.5);
+            cone1.translateX(1.9);
+			cone1.translateZ(-1.6);
+           
+            cone2.rotateZ(1.55);
+            cone2.translateY(-2.5);
+            cone2.translateX(1.9);
+			cone2.translateZ(1.6);
+            
+            cylinder.rotateZ(1.55);
+            cylinder.translateY(3);
+            cylinder.translateX(1.7);
+			cylinder.translateZ(1.55);
+            cylinder1.rotateZ(1.55);
+            cylinder1.translateY(3);
+            cylinder1.translateX(1.7);
+			cylinder1.translateZ(-1.55);
+            
+            cylinder2.translateY(2);
+            cylinder2.translateX()
+            
+            plane.rotateY(1.570);
+            plane.translateZ(-3.01);
+            plane.translateY(1.2);
+            plane.translateX(0.01);
+            
+            
+            plane1.translateZ(1.66);
+            plane1.translateY(1.2);
+            plane1.translateX(-2.53);
+            
+            
+            plane2.translateZ(-1.66);
+            plane2.translateY(1.2);
+            plane2.translateX(-2.51);
+            
+            
+            plane3.rotateY(1.570);
+            plane3.translateZ(3.01);
+            plane3.translateY(1.2);
+            plane3.translateX(0.01);
+            
+                        
+            plane4.rotateY(1.570);
+            plane4.translateZ(3.01);
+            plane4.translateY(1.5);
+            plane4.translateX(0.01);
+            
+                                    
+            plane5.rotateY(1.570);
+            plane5.translateZ(-3.03);
+            plane5.translateY(1.2);
+            plane5.translateX(-0.01);
+            
+                        
+            plane6.rotateY(1.570);
+            plane6.translateZ(-3.01);
+            plane6.translateY(1.65);
+            plane6.translateX(0.01);
+            
+            sphere.translateX(-3.25);
+            sphere.translateY(1.78);
+            sphere.translateZ(1.55);
+            
+            
+            sphere2.translateX(-3.25);
+            sphere2.translateY(1.78);
+            sphere2.translateZ(-1.55);
+            
+            
+            sphere3.translateX(3.25);
+            sphere3.translateY(1.85);
+            sphere3.translateZ(1.6);
+            
+            sphere4.translateX(3.25);
+            sphere4.translateY(1.85);
+            sphere4.translateZ(-1.6);
+            
+            sphere5.translateY(2.45);
+            sphere5.translateZ(-1.56);
+            sphere5.translateX(-2);
+            
+            //Parte Mateo
+            
+			cylinder22.translateY(1);
+            cylinder22.translateX(1.7);
+			cylinder22.translateZ(1.6);
+			cylinder22.rotateZ(1.55);
+			cylinder22.rotateX(1.55);
+			
+			cylinder66.translateY(1);
+            cylinder66.translateX(1.7);
+			cylinder66.translateZ(1.6);
+			cylinder66.rotateZ(1.55);
+			cylinder66.rotateX(1.55);
+			
+			cylinder100.translateY(1);
+            cylinder100.translateX(1.7);
+			cylinder100.translateZ(1.6);
+			cylinder100.rotateZ(1.55);
+			cylinder100.rotateX(1.55);
+			
+			
+			cylinder33.translateY(1);
+            cylinder33.translateX(-1.7);
+			cylinder33.translateZ(-1.6);
+			cylinder33.rotateZ(1.55);
+			cylinder33.rotateX(1.55);
+			
+			cylinder77.translateY(1);
+            cylinder77.translateX(-1.7);
+			cylinder77.translateZ(-1.6);
+			cylinder77.rotateZ(1.55);
+			cylinder77.rotateX(1.55);
+			
+			cylinder111.translateY(1);
+            cylinder111.translateX(-1.7);
+			cylinder111.translateZ(-1.6);
+			cylinder111.rotateZ(1.55);
+			cylinder111.rotateX(1.55);
+			
+			
+			
+			
+			cylinder44.translateY(1);
+            cylinder44.translateX(-1.7);
+			cylinder44.translateZ(1.6);
+			cylinder44.rotateZ(1.55);
+			cylinder44.rotateX(1.55);
+			
+			cylinder88.translateY(1);
+            cylinder88.translateX(-1.7);
+			cylinder88.translateZ(1.6);
+			cylinder88.rotateZ(1.55);
+			cylinder88.rotateX(1.55);
+			
+			cylinder122.translateY(1);
+            cylinder122.translateX(-1.7);
+			cylinder122.translateZ(1.6);
+			cylinder122.rotateZ(1.55);
+			cylinder122.rotateX(1.55);
+			
+			
+			
+			
+			cylinder55.translateY(1);
+            cylinder55.translateX(1.7);
+			cylinder55.translateZ(-1.6);
+			cylinder55.rotateZ(1.55);
+			cylinder55.rotateX(1.55);
+			
+			cylinder99.translateY(1);
+            cylinder99.translateX(1.7);
+			cylinder99.translateZ(-1.6);
+			cylinder99.rotateZ(1.55);
+			cylinder99.rotateX(1.55);
+			
+			cylinder133.translateY(1);
+            cylinder133.translateX(1.7);
+			cylinder133.translateZ(-1.6);
+			cylinder133.rotateZ(1.55);
+			cylinder133.rotateX(1.55);
+			
+			tubo.translateY(1.1);
+			
+			tubo3.translateY(1.1);
+			tubo3.translateX(1.7);
+			
+			tubo4.translateY(1.1);
+			tubo4.translateX(-1.7);
+			
+			tubo5.translateY(1.1);
+			tubo5.translateX(1.5);
+			
+			tubo6.translateY(1.1);
+			tubo6.translateX(-1.5);
+			
+			tubo7.translateY(1.1);
+			tubo7.translateZ(1.25);
+			
+			//Fin parte Mateo
+			
+            
+            
+           var curve2D = [];
+            curve2D[0] = new THREE.Vector2( 1.3, 0.88 );
+            curve2D[1] = new THREE.Vector2( 1.3, 0.88 );
+            curve2D[2] = new THREE.Vector2( 3, 0.86 );
+            curve2D[3] = new THREE.Vector2( 3.08, 0.88 );
+            curve2D[4] = new THREE.Vector2( 3.8, -0.2 );//final
+            
+			var shape = new THREE.Shape();
+			shape.moveTo(0.6,-0.2);//inicial
+			shape.splineThru(curve2D);
+            
+            var material = new THREE.LineBasicMaterial( { color : 0x08e8f8 } );
+            var resolution = 50;
+            var points = shape.getPoints( resolution );
+            var geometry = new THREE.BufferGeometry().setFromPoints( points );
+            // Create the final object to add to the scene
+            var curveObject = new THREE.Line( geometry, material );
+            
+			//EXTRUDE
+			var extrudeSettings = {
+				steps: 0,
+				amount: -		1,
+				bevelEnabled: false,
+			};
+
+			var geometryExt = new THREE.ExtrudeGeometry( shape, extrudeSettings );
+			var materialExt= new THREE.MeshStandardMaterial( { 
+				color: 0x08e8f8, 
+				metalness: 0.5, 
+				roughness: 0.1,
+				opacity: 0.75,
+				transparent: true			
+			} );
+			
+			var mesh = new THREE.Mesh( geometryExt, materialExt ) ;
+			scene.add(mesh);
+            
+            
+            mesh.rotateY(-1.58);
+            mesh.translateY(2);
+            mesh.translateZ(1.79); 
+            mesh.translateX(-2.2);
+            mesh.rotateX(-0.7);
+            
+            var mesh1 = new THREE.Mesh( geometryExt, materialExt ) ;
+			scene.add(mesh1);
+            mesh1.rotateY(-1.58);
+            mesh1.translateY(2);
+            mesh1.translateZ(-1.4);
+            mesh1.translateX(-2.2);
+            mesh1.rotateX(0.7);
+            
+            
+            var curve2D1 = [];
+            curve2D1[0] = new THREE.Vector2( 1.3, 0.88 );
+            curve2D1[1] = new THREE.Vector2( 1.3, 0.88 );
+            curve2D1[2] = new THREE.Vector2( 1.8, 0.88 );
+            curve2D1[3] = new THREE.Vector2( 1.8, 0.88 );
+            curve2D1[4] = new THREE.Vector2( 1.8, -0.1 );//final
+            
+			var shape1 = new THREE.Shape();
+			shape1.moveTo(0.7,-0.1);//inicial
+			shape1.splineThru(curve2D1);
+            
+            var material = new THREE.LineBasicMaterial( { color : 0x08e8f8 } );
+            var resolution = 50;
+            var points = shape.getPoints( resolution );
+            var geometry1 = new THREE.BufferGeometry().setFromPoints( points );
+            
+            // Create the final object to add to the scene
+            var curveObject1 = new THREE.Line( geometry1, material );
+            
+			//EXTRUDE
+			var extrudeSettings = {
+				steps: 0,
+				amount: -		1,
+				bevelEnabled: false,
+			};
+
+			var geometryExt1 = new THREE.ExtrudeGeometry( shape1, extrudeSettings );
+			var materialExt1= new THREE.MeshStandardMaterial( { 
+				color: 0x08e8f8, 
+				metalness: 0.5, 
+				roughness: 0.1,
+				opacity: 0.75,
+				transparent: true			
+			} );
+            
+            
+            var mesh2 = new THREE.Mesh( geometryExt1, materialExt1 ) ;
+            scene.add(mesh2);
+            mesh2.translateY(2);
+            mesh2.translateZ(-1.6);
+            mesh2.translateX(-2.2);
+            mesh2.rotateX(0.7);
+            
+            var mesh3 = new THREE.Mesh( geometryExt1, materialExt1 ) ;
+            scene.add(mesh3);
+            mesh3.translateY(2);
+            mesh3.translateZ(1.6);
+            mesh3.translateX(-2.2);
+            mesh3.rotateX(-0.7);
+            
+            
+             
+            var curve2D2 = [];
+            curve2D2[0] = new THREE.Vector2( 1.8, 0.88 );
+            curve2D2[1] = new THREE.Vector2( 1.8, 0.88 );
+            curve2D2[2] = new THREE.Vector2( 1.3, 0.88 );
+            curve2D2[3] = new THREE.Vector2( 1.3 ,0.88);
+            curve2D2[4] = new THREE.Vector2( 1.3, -0.1  );//final
+            
+			var shape2 = new THREE.Shape();
+			shape2.moveTo(2.5,-0.1);//inicial
+			shape2.splineThru(curve2D2);
+            
+            var material = new THREE.LineBasicMaterial( { color : 0x08e8f8 } );
+            var resolution = 50;
+            var points = shape.getPoints( resolution );
+            var geometry2 = new THREE.BufferGeometry().setFromPoints( points );
+            
+            // Create the final object to add to the scene
+            var curveObject2 = new THREE.Line( geometry2, material );
+            
+			//EXTRUDE
+			var extrudeSettings = {
+				steps: 0,
+				amount: -		1,
+				bevelEnabled: false,
+			};
+
+			var geometryExt2 = new THREE.ExtrudeGeometry( shape2, extrudeSettings );
+			var materialExt2= new THREE.MeshStandardMaterial( { 
+				color: 0x08e8f8, 
+				metalness: 0.5, 
+				roughness: 0.1,
+				opacity: 0.75,
+				transparent: true			
+			} );
+            var mesh4 = new THREE.Mesh( geometryExt2, materialExt2 ) ;
+            scene.add(mesh4);
+            mesh4.translateY(2);
+            mesh4.translateZ(1.6);
+            mesh4.translateX(-1.5);
+            mesh4.rotateX(-0.7);
+            
+            var mesh5 = new THREE.Mesh( geometryExt2, materialExt2 ) ;
+            scene.add(mesh5);
+            mesh5.translateY(2);
+            mesh5.translateZ(-1.6);
+            mesh5.translateX(-1.48);
+            mesh5.rotateX( 0.7);
+            
+            
+            var geometry7 = new THREE.BoxGeometry( 0.13, 0.13, 0.4 );
+            var material9 = new THREE.MeshBasicMaterial( {color: 0xcecdce} );
+            var cube3 = new THREE.Mesh( geometry7, material9 );
+            scene.add( cube3 );
+           
+            cube3.translateY(2);
+            cube3.translateX(-1.35);
+            cube3.translateZ(2.03);
+           
+            var geometry8 = new THREE.TorusGeometry( 0.8, 0.03, 20, 180, 1.1 );
+            var material10 = new THREE.MeshBasicMaterial( { color: 0xcecdce } );
+            var torus = new THREE.Mesh( geometry8, material10 );
+            scene.add( torus );
+           
+           torus.translateY(2);
+           torus.translateZ(1.35);//1.35
+           torus.translateX(-0.85);//-0.85
+           torus.rotateX(1.55);
+           torus.rotateZ(2.3);
+            
+           var torus1 = new THREE.Mesh( geometry8, material10 );
+           scene.add( torus1 );
+           
+           torus1.translateY(2);
+           torus1.translateZ(-1.35);//1.35
+           torus1.translateX(-0.85);//-0.85
+           torus1.rotateX(-1.55);
+           torus1.rotateZ(2.3);
+            
+           var cube4 = new THREE.Mesh( geometry7, material9 );
+           scene.add( cube4 );            
+           cube4.translateY(2);
+           cube4.translateX(-1.35);
+           cube4.translateZ(-2.03);
+            
+            var geometry9 = new THREE.CylinderGeometry( 0.03, 0.03, 0.6, 32 );
+            var material11 = new THREE.MeshBasicMaterial( {color: 0xcecdce} );
+            
+            var cylinder2 = new THREE.Mesh( geometry9, material11 );
+            scene.add( cylinder2 );
+           
+            cylinder2.translateY(2.1);
+            cylinder2.translateZ(-1.55);
+            cylinder2.translateX(-2.0);
+            
+            var geometry10 = new THREE.CylinderGeometry( 0.03, 0.03, 0.25, 32 );
+            var cylinder3 = new THREE.Mesh( geometry10, material11 );
+            scene.add( cylinder3 );
+            cylinder3.translateY(1.75);
+            cylinder3.translateZ(-1.7);
+            cylinder3.translateX(-0.5);
+            cylinder3.rotateZ(1.56);
+            
+            var cylinder4 = new THREE.Mesh( geometry10, material11 );
+            scene.add( cylinder4 );
+            cylinder4.translateY(1.75);
+            cylinder4.translateZ(-1.7);
+            cylinder4.translateX(0.8);
+            cylinder4.rotateZ(1.56);
+
+            var cylinder5 = new THREE.Mesh( geometry10, material11 );
+            scene.add( cylinder5 );
+            cylinder5.translateY(1.75);
+            cylinder5.translateZ(1.7);
+            cylinder5.translateX(0.8);
+            cylinder5.rotateZ(1.56);
+            
+            var cylinder6 = new THREE.Mesh( geometry10, material11 );
+            scene.add( cylinder6 );
+            cylinder6.translateY(1.75);
+            cylinder6.translateZ(1.7);
+            cylinder6.translateX(-0.5);
+            cylinder6.rotateZ(1.56);
+            
+            
+            var geometry11 = new THREE.CylinderGeometry( 0.03, 0.03, 1.8, 32 );
+            var material13 = new THREE.MeshBasicMaterial( {color: 0x000000} );
+            
+            var cylinder7 = new THREE.Mesh( geometry11, material13 );
+            scene.add( cylinder7 );
+            cylinder7.translateY(1.8);
+            cylinder7.translateZ(-0.045);
+            cylinder7.translateX(-3.0);
+            cylinder7.rotateX(1.570);
+            
+            var geometry12 = new THREE.CylinderGeometry( 0.03, 0.03, 1.2, 32 );
+            var cylinder8 = new THREE.Mesh( geometry12, material13 );
+            scene.add( cylinder8 );
+            cylinder8.translateY(1.6);
+            cylinder8.translateZ(-0.045);
+            cylinder8.translateX(-3.0);
+            cylinder8.rotateX(1.570);
+
+			//CONVERTIR A CSG
+			var boxCSG = THREE.CSG.fromMesh( cube );
+            var box1CSG = THREE.CSG.fromMesh( cube1 );
+			var coneCSG = THREE.CSG.fromMesh( cone );
+            var cone1CSG = THREE.CSG.fromMesh( cone1 );
+            var cone2CSG = THREE.CSG.fromMesh( cone2 );
+            var cylinderCSG = THREE.CSG.fromMesh( cylinder );
+			var cylinder1CSG = THREE.CSG.fromMesh( cylinder1 );
+            
+            
+            //Parte Mateo
+			
+			var cylinder22CSG = THREE.CSG.fromMesh( cylinder22 );
+			var cylinder33CSG = THREE.CSG.fromMesh( cylinder33 );
+			var cylinder44CSG = THREE.CSG.fromMesh( cylinder44 );
+			var cylinder55CSG = THREE.CSG.fromMesh( cylinder55 );
+			
+			var cylinder66CSG = THREE.CSG.fromMesh( cylinder66 );
+			var cylinder77CSG = THREE.CSG.fromMesh( cylinder77 );
+			var cylinder88CSG = THREE.CSG.fromMesh( cylinder88 );
+			var cylinder99CSG = THREE.CSG.fromMesh( cylinder99 );
+			
+			//Fin parte Mateo
+          
+			//APLICAR LAS OPERACIONES
+			var result = box1CSG.union( coneCSG ).subtract(boxCSG).union(cone1CSG).union(cone2CSG).union(cylinderCSG).union(cylinder1CSG);
+           //Parte Mateo
+			
+			var result2 =cylinder22CSG.subtract(cylinder66CSG)
+			var result3 =cylinder33CSG.subtract(cylinder77CSG)
+			var result4 =cylinder44CSG.subtract(cylinder88CSG)
+			var result5 =cylinder55CSG.subtract(cylinder99CSG)
+			
+			//Fin parte Mateo
+			//CONVERTIR A THREE
+			cube = THREE.CSG.toMesh( result );
+            cylinder11= THREE.CSG.toMesh( result2 );
+			cylinder22= THREE.CSG.toMesh( result3 );
+			cylinder33= THREE.CSG.toMesh( result4 );
+			cylinder44= THREE.CSG.toMesh( result5 );
+			cube.material = material1;
+            
+            //Parte Mateo
+			cylinder11.material = material55;
+			cylinder22.material = material55;
+			cylinder33.material = material55;
+			cylinder44.material = material55;
+			//Fin parte Mateo
+			
+			//AGREGAR A LA ESCENA LOS DIFERENTES ELEMENTOS
+			scene.add( cube );
+            scene.add(cylinder2);
+            scene.add( plane );
+            scene.add( plane1 );
+            scene.add( plane2 );
+            scene.add( plane3 );
+            scene.add( plane4 );
+            scene.add( plane5 );
+            scene.add( plane6 );
+            scene.add( sphere );
+            scene.add( sphere2 );
+            scene.add( sphere3 );
+            scene.add( sphere4 );
+            scene.add( sphere5 );
+            
+            //Parte Mateo
+			scene.add( cylinder11 );
+			scene.add( cylinder22 );
+			scene.add( cylinder33 );
+			scene.add( cylinder44 );
+			scene.add( cylinder100 );
+			scene.add( cylinder111 );
+			scene.add( cylinder122 );
+			scene.add( cylinder133 );
+			scene.add( tubo );
+			scene.add( tubo3 );
+			scene.add( tubo4 );
+			scene.add( tubo5 );
+			scene.add( tubo6 );
+			scene.add( tubo7 );
+			//Fin parte Mateo
+           		//ACTIVE PARA VISUALIZAR LA ESFERA
+
+			camera.position.x = 2;
+			camera.position.y = 2;
+		  	camera.position.z = 5;
+			camera.lookAt( origin );
+		}
+		function animate(){
+			requestAnimationFrame( animate );
+			controls.update();
+			render();
+		}
+		function render(){
+			renderer.render( scene, camera );
+		}
+    </script>
+  </body>
+</html>

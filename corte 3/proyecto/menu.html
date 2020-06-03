@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>menú wheels</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="./style.css">
+
+</head>
+
+<body>
+    <!-- partial:index.partial.html -->
+    <nav class=" contenedor3  whiteBackground ">
+       
+        <ul id="div1" class="nav flexContainer   flexEnd ">
+            
+            <a href= "index.html">logout</a>
+
+        </ul>
+    </nav>
+    <nav class="  flexColumn whiteBackground ">
+        
+        <ul id="div1" class="nav  flexColumn contenedor3 ">
+          <button type="button" class="btn btn-light" data-toggle="modal" data-target="#buscar">
+            Buscar viaje
+          </button>
+          <button type="button" class="btn btn-light" data-toggle="modal" data-target="#rest">
+            Generar viaje
+          </button>
+          <button type="button" class="btn btn-light" data-toggle="modal" data-target="#otros">
+            perfil
+        </button>
+
+        </ul>
+        <div class="flexContainer contenedor whiteBackground flexCenter">
+            <main class="  main1 ">
+                <footer class="flexContainer flexCenter  whiteText height=50px">&copy; Matbui </footer>
+                <a class="flexContainer flexCenter  whiteText height=50px"> @Copyright 2020</a>
+            </main>
+        </div>
+    </nav>
+    <div class="modal" id="buscar" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">buscar viaje</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                
+              </button>
+            </div>
+            <div class="modal-body">
+                <form name="form1">
+                    <input type="text" name="destino" id="#destino"> Destino <br>
+                    <input type="button" value="Buscar"  onclick="location.href= 'Proyecto.html'" >
+                  
+                  
+                </form>
+              </div>
+            <div class="modal-body">
+                
+                  </div>
+                
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal" id="rest" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Generar viaje</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form name="form1">
+                <input type="text" name="inicio" id="#iViaje"> Inicio Viaje <br>
+                <input type="text" name="fin" id="#fViaje"> Fin viaje <br>
+                <input type="text" name="cupos" id="#cupos"> número de cupos <br>
+                <input type="button" value="Iniciar" id="#btnGenerar" onclick="location.href= 'Proyecto.html'">
+                
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal" id="otros" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">perfil</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form name="form1">
+                <input type="text" name="txt"> Usuario <br>
+                <input type="text" name="num"> Contraseña <br>
+                <input id type="button" value="ir a.." id="#btnPerfil" onclick="usrpas()">
+                
+                
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+    
+    <!-- partial -->
+    
+    
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="./script.js"></script>
+    <script src="./logicajs.js"></script>
+</body>
+
+</html>

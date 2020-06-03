@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <title>Servicio Wheels</title>
+	<meta charset = "utf-8" />
+   <style>
+            html, body { margin: 0; padding: 0; overflow: hidden; }
+            #info {
+                position: absolute;
+                padding: 10px;
+                width: 100%;
+                text-align: center;
+                color: #ECE504;
+            }
+        </style>
+  </head>
+   <div id="info">Servicio Wheels<br/>
+            Presentado por:Martin Rodriguez, Maria Paula Velandia, Mateo Buitrago <br/>
+  </div>
+    
+   
+  <body 
+     onload= "crearGrafo()">
+	 <div class="modal" id="login" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <h5 class="modal-title">¿Seguro que quiere cancelar el viaje?</h5>
+			  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			  </button>
+			</div>
+			<div class="modal-body">
+			  <form name="form1">
+				<input type="button" id="btnIngresar" value="cancelar" onclick="location.href= 'menu.html'">
+			   
+  
+				
+				
+			  </form>
+			</div>
+		  </div>
+		</div>
+	  </div>
+    <script src="js/three.js"></script>
+	<script src="js/controls/TrackballControls.js"></script>
+    <script src="js/threex.domevents.js"></script>
+    
+	
+    <script>
+		
+		
+			//Primera Generación
+			var Gran_Estación = {
+			nombre: "Gran_Estación",
+			descripcion: " El usuario pude pedir su servicio en este punto,Con destino a Universidad Militar Nueva Granada (Cajicá-Campus)."
+			};
+        
+            //Segunda Generación
+			var Simon_Bolivar = {
+			nombre: "Simon_Bolivar",
+			descripcion: "El usuario pude pedir su servicio en este punto,Con destino a Universidad Militar Nueva Granada (Cajicá-Campus)."
+			};
+    
+            //Tercera Generación
+        	var Calle_170 = {
+			nombre: "Calle_170",
+			descripcion: "El usuario pude pedir su servicio en este punto,Con destino a Universidad Militar Nueva Granada (Cajica-Campus)."
+			};
+                   
+			var Centro_comercial_santafé = {
+			nombre: "Centro_comercial_santafé",
+			descripcion: "El usuario pude pedir su servicio en este punto,Con destino a Universidad Militar Nueva Granada (Cajica-Campus)"
+			};
+			
+            //Cuarta Generación
+			var Campus = {
+			nombre: "Campus",
+			descripcion: " El usuario llega a la universidad "
+			};
+        //////////////////////////////////////////////////////////////////////////////////////////////////////
+		    //Chia
+            //Primera Generación
+			var Av_Chilacos  = {
+			nombre: "Av_Chilacos",
+			descripcion: " El usuario pude pedir su servicio en este punto,Con destino a Universidad Militar Nueva Granada (Cajicá-Campus)."
+			};
+        
+            //Segunda Generación
+			var CentroChia = {
+			nombre: "CentroChia",
+			descripcion: "El usuario pude pedir su servicio en este punto,Con destino a Universidad Militar Nueva Granada (Cajicá-Campus)."
+			};
+    
+            //Tercera Generación
+        	var Variante = {
+			nombre: "Variante",
+			descripcion: "El usuario pude pedir su servicio en este punto,Con destino a Universidad Militar Nueva Granada (Cajica-Campus)."
+			};
+                   
+			var CajicaCentro= {
+			nombre: "CajicaCentro",
+			descripcion: "El usuario pude pedir su servicio en este punto,Con destino a Universidad Militar Nueva Granada (Cajica-Campus)"
+			};
+			
+            
+        
+        //////////////////////////////////////////////////////////////////////////////////////////////////////
+		    //Cajicá
+            //Primera Generación
+			var CajicáCentro  = {
+			nombre: "CajicáCentro",
+			descripcion: " El usuario pude pedir su servicio en este punto,Con destino a Universidad Militar Nueva Granada (Cajicá-Campus)."
+			};
+        
+            //Segunda Generación
+			var Capellania = {
+			nombre: "Capellania",
+			descripcion: "El usuario pude pedir su servicio en este punto,Con destino a Universidad Militar Nueva Granada (Cajicá-Campus)."
+			};
+    
+            
+			
+			
+            
+        
+        
+			
+			var Ruta_Universidad =
+                {
+			Nivel_1: [Gran_Estación],
+			Nivel_2: [Simon_Bolivar],
+			Nivel_3: [Calle_170,Centro_comercial_santafé],
+			Nivel_4: [Campus],
+           
+			    };
+        
+        var Ruta_Universidad2 =
+                {
+			Nivel_1: [Av_Chilacos],
+			Nivel_2: [CentroChia],
+			Nivel_3: [Variante,CajicaCentro],
+			Nivel_4: [Campus],
+           
+			    };
+        var Ruta_Universidad3 =
+                {
+			Nivel_1: [CajicaCentro],
+			Nivel_2: [Capellania],
+			Nivel_3: [Campus],
+           
+			    };
+			
+			
+			
+			
+		var scene, aspect, camera, renderer, controls;
+		var arbolRuta_universidad;
+        var arbolRuta_universidad2;
+        var arbolRuta_universidad3;
+		//var material;
+		
+		class Grafo{
+		  constructor( NumG, arregloU, matLinea){
+		    this.NumG = NumG;
+			this.arregloU = arregloU;
+            this.matLinea = matLinea;
+		  }
+		  Dibujar_Grafo(){
+			var nodo = new THREE.BoxGeometry( 1, 1, 1 ); //GEOMETRIA PARA LOS CUBOS
+			var nodos = new Array(); 
+			for (var i = 0; i<= this.NumG; i++){
+				for(var j = 0; j< this.arregloU[i];j++){
+				var material = new THREE.MeshBasicMaterial( {  color: Math.random() * 0xe0e0e0, opacity: 0.8 } );
+				var cubito = new THREE.Mesh( nodo, material );
+				nodos.push(cubito);
+				}
+			}
+			var aux = 0; 
+			for(var a = 0; a<this.arregloU[1];a++){ //UBICAR CUBOS NIVEL 1
+				if(a<this.arregloU[1]){
+				nodos[a].position.x=0;
+			    aux = aux+1 ;}
+			}
+			
+			for(var m = 0; m < this.arregloU[1] ; m++){ //UBICAR CUBOS NIVEL 2
+				nodos[aux].position.y = -5;
+                nodos[aux].position.x = -50;
+				//nodos[aux].position.z= -1;
+				if(this.arregloU[1]<=1 && this.arregloU[0]>1 ){
+					nodos[aux].position.x=((nodos[aux-1].position.x-nodos[aux-aux].position.x)/2)+nodos[aux-aux].position.x;
+				}
+				else nodos[aux].position.x = 5;
+				nodos[aux].position.x= 0.1;
+				aux = aux +1;
+			}
+			
+              
+			for(var t = 0; t<this.arregloU[2];t++){ //UBICAR CUBOS NIVEL 3 
+				nodos[aux+t].position.y = 0 ;
+               	if(this.arregloU[2] >= 1 && this.arregloU[3] > 1 ){
+					nodos[aux].position.x= 0;
+				} else if (this.arregloU[2] > 1 && this.arregloU[3] >= 1 ){
+					nodos[aux].position.x= 5;//calle170
+                    nodos[aux].position.y= -5;//calle170
+				} if(this.arregloU[2] > 2){
+					nodos[aux+1].position.x = 0;	
+				}
+				nodos[aux+t].position.x =-5; //santafe 
+                nodos[aux+t].position.y =-5; //santafe 
+								
+			}
+				aux = aux + this.arregloU[2];
+           
+           
+              
+			for(var t = 0; t<this.arregloU[3];t++){ //UBICAR CUBOS NIVEL 4.
+			nodos[aux+t].position.y = -20;//campus
+            nodos[aux+t].position.x = 0.1;//campus
+            				
+			}
+              
+              
+             
+              
+			//JERARQUIA DE LOS CUBOS 
+			for ( var t = 1; t<nodos.length; t++){
+				nodos[0].add(nodos[t])
+			}
+			
+			// CREACIOÓN DE LA LINEA
+			var points = [];
+					aux=0;
+					for(var i = 0; i<this.arregloU[0];i++){ //LINEA G 1 ><
+						var vector = new THREE.Vector3( nodos[aux].position.x, nodos[aux].position.y, nodos[aux].position.z );
+						points.push(vector);
+						aux++;
+					}
+					
+					for(var i = 0; i<this.arregloU[1];i++){ //LINEA G 2 ><
+						if(this.arregloU[0]>=1){
+							var vector =new THREE.Vector3( (nodos[aux-1].position.x-nodos[aux-this.arregloU[0]].position.x)/2 + nodos[aux-this.arregloU[0]].position.x, nodos[aux-1].position.y, nodos[aux-1].position.z );
+							points.push(vector);
+						}
+						vector = new THREE.Vector3( nodos[aux].position.x, nodos[aux].position.y, nodos[aux].position.z );
+						points.push(vector);
+						aux++;
+					}
+					
+					for(var i = 0; i<this.arregloU[2];i++){
+						if(this.arregloU[1]>=1 ){
+							var vector =new THREE.Vector3( (nodos[aux-1].position.x-nodos[aux-this.arregloU[1]].position.x)/2 + nodos[aux-this.arregloU[1]].position.x, nodos[aux-1].position.y, nodos[aux-1].position.z );
+							points.push(vector);
+						}
+
+						vector = new THREE.Vector3( nodos[aux].position.x, nodos[aux].position.y, nodos[aux].position.z );
+						points.push(vector);
+						aux++;
+					}
+					for(var i = 1; i<this.arregloU[3]+1;i++){
+						var vector;
+						if(this.arregloU[2]>=1 && this.arregloU[2] < 3){
+							vector =new THREE.Vector3( (nodos[aux-1].position.x-nodos[aux-this.arregloU[2]].position.x)/2 + nodos[aux-this.arregloU[2]].position.x, nodos[aux-1].position.y, nodos[aux-1].position.z );
+							points.push(vector);
+						} else {
+							vector =new THREE.Vector3( (nodos[aux-1].position.x-nodos[aux-this.arregloU[2]].position.x)/2 + 3 + nodos[aux-this.arregloU[2]].position.x, nodos[aux-1].position.y, nodos[aux-1].position.z );
+							points.push(vector);
+						}
+						if(this.arregloU[3]>=2){
+						     vector =new THREE.Vector3( (nodos[aux+this.arregloU[2]-i].position.x-nodos[aux].position.x)/2 + nodos[aux-3].position.x, nodos[aux].position.y, nodos[aux].position.z );
+							 points.push(vector);
+						}
+							vector = new THREE.Vector3( nodos[aux].position.x, nodos[aux].position.y, nodos[aux].position.z );
+							points.push(vector);
+						aux++;
+					
+					}
+              
+              for(var i = 1; i<this.arregloU[3]+1;i++){
+						var vector;
+						if(this.arregloU[2]>=1 && this.arregloU[0] < 3){
+							vector =new THREE.Vector3( (nodos[aux-2].position.x-nodos[aux-this.arregloU[1]].position.x)/2 + nodos[aux-this.arregloU[1]].position.x, nodos[aux].position.y, nodos[aux].position.z );
+							points.push(vector);
+						} else {
+							vector =new THREE.Vector3( (nodos[aux-2].position.x-nodos[aux-this.arregloU[1]].position.x)/2 + 3 + nodos[aux-this.arregloU[2]].position.x, nodos[aux-2].position.y, nodos[aux-1].position.z );
+							points.push(vector);
+						}
+						if(this.arregloU[2]>=1){
+						     vector =new THREE.Vector3( (nodos[aux+this.arregloU[1]-i].position.x-nodos[aux].position.x)/2 + nodos[aux].position.x, nodos[aux].position.y, nodos[aux].position.z );
+							 points.push(vector);
+						}
+							vector = new THREE.Vector3( nodos[aux-2].position.x, nodos[aux-1].position.y, nodos[aux].position.z );
+							points.push(vector);
+						aux++;
+					
+					}
+
+					
+					
+					var geometry2 = new THREE.BufferGeometry().setFromPoints( points );
+					var line = new THREE.Line( geometry2, this.matLinea );
+					nodos[0].add( line ); //RELACIONAR LA LINEA CON LAS CAJAS (PADRE E HIJO)
+					//console.log(nodos.length);
+					return nodos;
+			}
+		}
+		init();
+		animate();
+		function init(){
+			//INICIALIZACIÓN
+	        scene = new THREE.Scene();
+			/*const loader = new THREE.TextureLoader();
+			loader.load('Fondo.jpg', function(texture)
+			{
+				scene.background = texture;
+			});*/
+			//scene.background = new THREE.Color( 0xFFFFFF );
+	        aspect = window.innerWidth / window.innerHeight;
+	        camera = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000);
+	        renderer = new THREE.WebGLRenderer({antialias: true});
+	        renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+			
+						
+			
+
+			//CONTROLES DE LA CAMARA
+			controls = new THREE.TrackballControls(camera);
+		
+			controls.rotateSpeed = 0.2;
+			controls.zoomSpeed = 4.0;
+
+			controls.noZoom = false;
+			controls.noPan = false;
+
+			controls.staticMoving = false;
+			controls.dynamicDampingFactor = 0.3;
+			controls.addEventListener('change', render);
+			
+				
+			
+			
+				
+		
+
+			camera.position.x = 0;
+			camera.position.y = 0;
+		  	camera.position.z = 60;
+			camera.lookAt( origin );	
+		}
+		
+		function crearGrafo(){
+			var matLineaR1 = new THREE.LineBasicMaterial( { color: 0xffff00 });
+            var matLineaR2 = new THREE.LineBasicMaterial( { color: 0x252850 });
+            var matLineaR3 = new THREE.LineBasicMaterial( { color: 0xFF0000 });
+
+			var Ruta_universidad = [0,1,2,1,1]; //ARREGLO DONDE SE PONE LA CANTIDAD DE MIEMBROS POR CADA GENERACIÓN
+            var Ruta_universidad2 = [0,1,2,1,1]; //ARREGLO DONDE SE PONE LA CANTIDAD DE MIEMBROS POR CADA GENERACIÓN
+            var Ruta_universidad3 = [1,1,1,0,0]; //ARREGLO DONDE SE PONE LA CANTIDAD DE MIEMBROS POR CADA GENERACIÓN
+			
+			
+			var Grafo_1 = new Grafo(5,Ruta_universidad,matLineaR1);
+            var Grafo_2 = new Grafo(5,Ruta_universidad2,matLineaR2);
+            var Grafo_3 = new Grafo(5,Ruta_universidad3,matLineaR3);
+			
+			arbolRuta_universidad = Grafo_1.Dibujar_Grafo();
+			scene.add(arbolRuta_universidad[0]);
+			arbolRuta_universidad[0].position.x=-50;
+			arbolRuta_universidad[0].position.y=8;
+            
+            arbolRuta_universidad2 = Grafo_2.Dibujar_Grafo();
+			scene.add(arbolRuta_universidad2[0]);
+			arbolRuta_universidad2[0].position.x=-0.8 ;
+			arbolRuta_universidad2[0].position.y=8;
+            
+            arbolRuta_universidad3 = Grafo_3.Dibujar_Grafo();
+			scene.add(arbolRuta_universidad3[0]);
+			arbolRuta_universidad3[0].position.x=50;
+			arbolRuta_universidad3[0].position.y=8;
+			
+			
+			
+			interactividadRuta_universidad();
+            interactividadRuta_universidad2();
+            interactividadRuta_universidad3();
+			
+
+		}
+       
+		function interactividadRuta_universidad()
+        {
+            
+			var materialSelec = new THREE.LineBasicMaterial( { color: 0x39ff14 });
+			var materialOriginal;
+			var domEvents=new THREEx.DomEvents(camera,render.domElement);
+            
+     
+            
+			domEvents.addEventListener(arbolRuta_universidad[0],'mouseover', event=>{
+				materialOriginal = arbolRuta_universidad[0].material;
+				arbolRuta_universidad[0].scale.set(2,2,2);
+				arbolRuta_universidad[0].material = materialSelec;
+				alert("Nombre: "+Ruta_Universidad.Nivel_1[0].nombre +" \n" +"Descripcion: "+Ruta_Universidad.Nivel_1[0].descripcion);
+			});
+			
+            domEvents.addEventListener(arbolRuta_universidad[1],'mouseover', event=>{
+				materialOriginal = arbolRuta_universidad[1].material;
+				arbolRuta_universidad[1].scale.set(2,2,2);
+				arbolRuta_universidad[1].material = materialSelec;
+				alert("Nombre: "+Ruta_Universidad.Nivel_2[0].nombre +" \n" +"Descripcion: "+Ruta_Universidad.Nivel_2[0].descripcion);
+			});
+			
+			domEvents.addEventListener(arbolRuta_universidad[2],'mouseover', event=>{
+				materialOriginal = arbolRuta_universidad[2].material;
+				arbolRuta_universidad[2].scale.set(2,2,2);
+				arbolRuta_universidad[2].material = materialSelec;
+				alert("Nombre: "+Ruta_Universidad.Nivel_3[0].nombre +" \n" +"Descripcion: "+Ruta_Universidad.Nivel_3[0].descripcion);
+			});
+			
+            domEvents.addEventListener(arbolRuta_universidad[3],'mouseover', event=>{
+				materialOriginal = arbolRuta_universidad[3].material;
+				arbolRuta_universidad[3].scale.set(2,2,2);
+				arbolRuta_universidad[3].material = materialSelec;
+				alert("Nombre: "+Ruta_Universidad.Nivel_3[1].nombre +" \n" +"Descripcion: "+Ruta_Universidad.Nivel_3[1].descripcion);
+			});
+            
+            
+             domEvents.addEventListener(arbolRuta_universidad[4],'mouseover', event=>{
+				materialOriginal = arbolRuta_universidad[4].material;
+				arbolRuta_universidad[4].scale.set(2,2,2);
+				arbolRuta_universidad[4].material = materialSelec;
+				alert("Nombre: "+Ruta_Universidad.Nivel_4[0].nombre +" \n" +"Descripcion: "+Ruta_Universidad.Nivel_4[0].descripcion);
+			});
+            
+            
+			
+			
+            
+            
+        }
+        
+        function interactividadRuta_universidad2()
+        {
+            
+			var materialSelec = new THREE.LineBasicMaterial( { color: 0xFe4164 });
+			var materialOriginal;
+			var domEvents=new THREEx.DomEvents(camera,render.domElement);
+            
+			domEvents.addEventListener(arbolRuta_universidad2[0],'mouseover', event=>{
+				materialOriginal = arbolRuta_universidad2[0].material;
+				arbolRuta_universidad2[0].scale.set(2,2,2);
+				arbolRuta_universidad2[0].material = materialSelec;
+				alert("Nombre: "+Ruta_Universidad2.Nivel_1[0].nombre +" \n" +"Descripcion: "+Ruta_Universidad2.Nivel_1[0].descripcion);
+			});
+			
+            domEvents.addEventListener(arbolRuta_universidad2[1],'mouseover', event=>{
+				materialOriginal = arbolRuta_universidad2[1].material;
+				arbolRuta_universidad2[1].scale.set(2,2,2);
+				arbolRuta_universidad2[1].material = materialSelec;
+				alert("Nombre: "+Ruta_Universidad2.Nivel_2[0].nombre +" \n" +"Descripcion: "+Ruta_Universidad2.Nivel_2[0].descripcion);
+			});
+			
+			domEvents.addEventListener(arbolRuta_universidad2[2],'mouseover', event=>{
+				materialOriginal = arbolRuta_universidad2[2].material;
+				arbolRuta_universidad2[2].scale.set(2,2,2);
+				arbolRuta_universidad2[2].material = materialSelec;
+				alert("Nombre: "+Ruta_Universidad2.Nivel_3[0].nombre +" \n" +"Descripcion: "+Ruta_Universidad2.Nivel_3[0].descripcion);
+			});
+			
+            domEvents.addEventListener(arbolRuta_universidad2[3],'mouseover', event=>{
+				materialOriginal = arbolRuta_universidad2[3].material;
+				arbolRuta_universidad2[3].scale.set(2,2,2);
+				arbolRuta_universidad2[3].material = materialSelec;
+				alert("Nombre: "+Ruta_Universidad2.Nivel_3[1].nombre +" \n" +"Descripcion: "+Ruta_Universidad2.Nivel_3[1].descripcion);
+			});
+            
+            
+             domEvents.addEventListener(arbolRuta_universidad2[4],'mouseover', event=>{
+				materialOriginal = arbolRuta_universidad2[4].material;
+				arbolRuta_universidad2[4].scale.set(2,2,2);
+				arbolRuta_universidad2[4].material = materialSelec;
+				alert("Nombre: "+Ruta_Universidad2.Nivel_4[0].nombre +" \n" +"Descripcion: "+Ruta_Universidad2.Nivel_4[0].descripcion);
+			});
+            
+        
+			
+			
+            
+            
+        }
+        
+        function interactividadRuta_universidad3()
+        {
+            
+			var materialSelec = new THREE.LineBasicMaterial( { color: 0xffa420 });
+			var materialOriginal;
+			var domEvents=new THREEx.DomEvents(camera,render.domElement);
+            
+			domEvents.addEventListener(arbolRuta_universidad3[0],'mouseover', event=>{
+				materialOriginal = arbolRuta_universidad3[0].material;
+				arbolRuta_universidad3[0].scale.set(2,2,2);
+				arbolRuta_universidad3[0].material = materialSelec;
+				alert("Nombre: "+Ruta_Universidad3.Nivel_1[0].nombre +" \n" +"Descripcion: "+Ruta_Universidad3.Nivel_1[0].descripcion);
+			});
+			
+            domEvents.addEventListener(arbolRuta_universidad3[1],'mouseover', event=>{
+				materialOriginal = arbolRuta_universidad3[1].material;
+				arbolRuta_universidad3[1].scale.set(2,2,2);
+				arbolRuta_universidad3[1].material = materialSelec;
+				alert("Nombre: "+Ruta_Universidad3.Nivel_2[0].nombre +" \n" +"Descripcion: "+Ruta_Universidad3.Nivel_2[0].descripcion);
+			});
+			
+			domEvents.addEventListener(arbolRuta_universidad3[2],'mouseover', event=>{
+				materialOriginal = arbolRuta_universidad3[2].material;
+				arbolRuta_universidad3[2].scale.set(2,2,2);
+				arbolRuta_universidad3[2].material = materialSelec;
+				alert("Nombre: "+Ruta_Universidad3.Nivel_3[0].nombre +" \n" +"Descripcion: "+Ruta_Universidad3.Nivel_3[0].descripcion);
+			});
+			
+            
+            
+        
+			
+			
+            
+            
+        }
+          
+
+       
+		
+		function animate(){
+			
+			requestAnimationFrame( animate );
+			controls.update();
+			render();
+		}
+		function render(){
+
+			renderer.render( scene, camera );
+			
+		}
+    </script>
+  </body>
+</html>
